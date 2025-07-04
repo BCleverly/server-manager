@@ -123,4 +123,17 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Site Root Path
+    |--------------------------------------------------------------------------
+    |
+    | This value defines the root directory where your site(s) are deployed on the
+    | server. Set this in your ".env" file using the SITE_ROOT_PATH variable. This is
+    | useful for setups such as /var/www/{sitename}, allowing you to distinguish
+    | between different site deployments on the same server.
+    |
+    */
+    'site_root_path' => env('SITE_ROOT_PATH', '/var/www'),
+
 ];
