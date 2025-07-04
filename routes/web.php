@@ -19,6 +19,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('settings/profile', Profile::class)->name('settings.profile');
     Route::get('settings/password', Password::class)->name('settings.password');
     Route::get('settings/appearance', Appearance::class)->name('settings.appearance');
+
+    // Sites section
+    Route::get('sites', \App\Livewire\Sites\Index::class)->name('sites.index');
+    Route::get('sites/create', \App\Livewire\Sites\Create::class)->name('sites.create');
 });
 
 Route::passkeys();

@@ -13,7 +13,7 @@ use Spatie\LaravelPasskeys\Models\Concerns\InteractsWithPasskeys;
 class User extends Authenticatable implements HasPasskeys
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, InteractsWithPasskeys;
+    use HasFactory, InteractsWithPasskeys, Notifiable;
 
     /**
      * The attributes that are mass assignable.

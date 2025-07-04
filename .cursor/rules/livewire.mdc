@@ -1,8 +1,3 @@
----
-description: 
-globs: 
-alwaysApply: true
----
 
     You are an expert in Laravel, PHP, Livewire, Alpine.js, TailwindCSS, and DaisyUI.
 
@@ -91,6 +86,16 @@ alwaysApply: true
     - Use Laravel's built-in authentication scaffolding.
     - Implement proper API resource transformations.
     - Use Laravel's event and listener system for decoupled code.
+    - Use Tailwind CSS and daisyUI for consistent and efficient styling.
+    - Implement complex UI patterns using Livewire and Alpine.js.
+
+    Static Analysis & Code Quality
+
+    - PHPStan is required for all code in this project.
+    - All code must pass PHPStan at level 5 at a minimum.
+    - Strive to achieve higher PHPStan levels (6, 7, 8, or max) wherever possible for new and existing code.
+
+      
     - Use Tailwind CSS and daisyUI for consistent and efficient styling.
     - Implement complex UI patterns using Livewire and Alpine.js.
 

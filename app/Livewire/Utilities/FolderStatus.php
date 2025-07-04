@@ -11,10 +11,15 @@ use Livewire\Component;
 class FolderStatus extends Component
 {
     public string $path;
+
     public bool $exists = false;
+
     public ?string $permissions = null;
+
     public ?string $owner = null;
+
     public ?string $group = null;
+
     public ?string $system = null;
 
     public function mount(): void
@@ -44,6 +49,7 @@ class FolderStatus extends Component
         if ($this->system === 'Windows') {
             return decoct($perms & 0777);
         }
+
         return substr(sprintf('%o', $perms), -4);
     }
 
@@ -54,6 +60,7 @@ class FolderStatus extends Component
         }
         $owner = function_exists('posix_getpwuid') ? posix_getpwuid(fileowner($path))['name'] ?? 'Unknown' : 'Unknown';
         $group = function_exists('posix_getgrgid') ? posix_getgrgid(filegroup($path))['name'] ?? 'Unknown' : 'Unknown';
+
         return [$owner, $group];
     }
 
@@ -61,4 +68,4 @@ class FolderStatus extends Component
     {
         return view('livewire.utilities.folder-status');
     }
-} 
+}

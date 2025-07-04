@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
+use App\Livewire\Utilities\FolderStatus;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
 use Livewire\Livewire;
-use App\Livewire\Utilities\FolderStatus;
 
 it('displays folder status for an existing directory', function () {
-    $tempDir = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'test-folder-status';
-    if (!File::exists($tempDir)) {
+    $tempDir = sys_get_temp_dir().DIRECTORY_SEPARATOR.'test-folder-status';
+    if (! File::exists($tempDir)) {
         File::makeDirectory($tempDir);
     }
     Config::set('app.site_root_path', $tempDir);
@@ -25,7 +25,7 @@ it('displays folder status for an existing directory', function () {
 });
 
 it('displays folder status for a non-existing directory', function () {
-    $nonExistent = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'does-not-exist-folder-status';
+    $nonExistent = sys_get_temp_dir().DIRECTORY_SEPARATOR.'does-not-exist-folder-status';
     if (File::exists($nonExistent)) {
         File::deleteDirectory($nonExistent);
     }
@@ -34,4 +34,4 @@ it('displays folder status for a non-existing directory', function () {
     Livewire::test(FolderStatus::class)
         ->assertSee($nonExistent)
         ->assertSee('No');
-}); 
+});
