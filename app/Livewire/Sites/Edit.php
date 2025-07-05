@@ -16,14 +16,14 @@ class Edit extends Component
     use AuthorizesRequests;
 
     public SiteForm $form;
-    
+
     public int $siteId;
 
     public function mount(Site $site): void
     {
         $this->authorize('update', $site);
         $this->siteId = $site->id;
-        
+
         $this->form->name = $site->name;
         $this->form->domain = $site->domain;
         $this->form->php_version = $site->php_version;
@@ -66,17 +66,8 @@ class Edit extends Component
 
     public function updateSite()
     {
-        $this->validate($this->form->rulesForUpdate($this->siteId));
-        
-        $this->site->update([
-            'name' => $this->form->name,
-            'domain' => $this->form->domain,
-            'php_version' => $this->form->php_version,
-            'repository' => $this->form->repository,
-            'repository_branch' => $this->form->repository_branch,
-            'folder' => $this->form->folder,
-            'letsencrypt_https_enabled' => $this->form->letsencrypt_https_enabled,
-        ]);
+    
+        $this->site->update($this->form->all());
 
         session()->flash('success', __('Site updated successfully.'));
 
@@ -92,4 +83,4 @@ class Edit extends Component
     {
         return view('livewire.sites.edit');
     }
-} 
+}

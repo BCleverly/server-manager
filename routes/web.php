@@ -25,6 +25,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('sites/create', \App\Livewire\Sites\Create::class)->name('sites.create');
     Route::get('sites/{site}', \App\Livewire\Sites\Show::class)->name('sites.show');
     Route::get('sites/{site}/edit', \App\Livewire\Sites\Edit::class)->name('sites.edit');
+
+    // Chat section
+    Route::get('chat', \App\Livewire\Chat::class)->name('chat');
 });
 
 Route::passkeys();

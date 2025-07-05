@@ -30,17 +30,12 @@ class Create extends Component
 
     public function createSite()
     {
-        $this->validate($this->form->rules());
-        $site = Site::create([
-            'user_id' => Auth::id(),
-            'name' => $this->form->name,
-            'domain' => $this->form->domain,
-            'folder' => $this->form->folder,
-            'php_version' => $this->form->php_version,
-            'repository' => $this->form->repository,
-            'repository_branch' => $this->form->repository_branch,
-            'letsencrypt_https_enabled' => $this->form->letsencrypt_https_enabled,
-        ]);
+        $this->validate();
+        
+        $site = auth()->user()->sites()->create(
+            $this->form->all()
+        );
+        
         session()->flash('success', __('Site created successfully.'));
 
         return redirect()->route('sites.show', $site);
