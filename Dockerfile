@@ -1,4 +1,4 @@
-FROM php:8.4-fpm-alpine
+FROM dunglas/frankenphp:1-alpine
 
 # Install system dependencies
 RUN apk add --no-cache \
@@ -15,12 +15,13 @@ RUN apk add --no-cache \
     g++ \
     make \
     autoconf \
-    nginx \
     nodejs=20.11.1-r0 \
-    npm
+    npm \
+    sqlite \
+    sqlite-dev
 
 # Install PHP extensions
-RUN docker-php-ext-install pdo pdo_mysql mbstring zip exif pcntl intl bcmath
+RUN docker-php-ext-install pdo pdo_mysql pdo_sqlite mbstring zip exif pcntl intl bcmath
 RUN pecl install redis \
     && docker-php-ext-enable redis
 
@@ -42,5 +43,9 @@ RUN npm install && npm run build || true
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
-EXPOSE 9000
-CMD ["php-fpm"] 
+# Create SQLite database file if it doesn't exist
+RUN touch /var/www/html/database/database.sqlite && \
+    chown www-data:www-data /var/www/html/database/database.sqlite
+
+EXPOSE 80
+CMD ["frankenphp", "run", "--config", "/var/www/html/frankenphp.toml"] 

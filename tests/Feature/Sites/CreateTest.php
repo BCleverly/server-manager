@@ -3,9 +3,6 @@
 declare(strict_types=1);
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-
-uses(RefreshDatabase::class);
 
 it('shows the sites create page for authenticated users', function () {
     $user = User::factory()->create();

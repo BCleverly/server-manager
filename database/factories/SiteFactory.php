@@ -23,8 +23,20 @@ class SiteFactory extends Factory
             'domain' => $this->faker->unique()->domainName,
             'folder' => $this->faker->slug(2),
             'php_version' => $this->faker->randomElement(['8.1', '8.2', '8.3']),
-            'repository' => $this->faker->optional()->url,
-            'repository_branch' => $this->faker->optional()->randomElement(['main', 'master', 'develop']),
+            'repository' => null,
+            'repository_branch' => null,
+            'letsencrypt_https_enabled' => $this->faker->boolean(20), // 20% chance of being enabled
         ];
+    }
+
+    /**
+     * Indicate that the site has repository information.
+     */
+    public function withRepository(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'repository' => $this->faker->url,
+            'repository_branch' => $this->faker->randomElement(['main', 'master', 'develop']),
+        ]);
     }
 }

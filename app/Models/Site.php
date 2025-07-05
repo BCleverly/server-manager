@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string $php_version
  * @property string|null $repository
  * @property string|null $repository_branch
+ * @property bool $letsencrypt_https_enabled
  * @property string $folder
  * @property string|null $deployment_status
  * @property string|null $deployment_log
@@ -29,6 +30,10 @@ class Site extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        'letsencrypt_https_enabled' => 'boolean',
+    ];
+
     protected $fillable = [
         'user_id',
         'name',
@@ -36,6 +41,7 @@ class Site extends Model
         'php_version',
         'repository',
         'repository_branch',
+        'letsencrypt_https_enabled',
         'folder',
     ];
 
@@ -69,5 +75,29 @@ class Site extends Model
     public function serverMetrics(): HasMany
     {
         return $this->hasMany(ServerMetric::class);
+    }
+
+    /**
+     * Check if Let's Encrypt HTTPS is enabled for this site.
+     */
+    public function hasLetsEncryptHttps(): bool
+    {
+        return $this->letsencrypt_https_enabled;
+    }
+
+    /**
+     * Enable Let's Encrypt HTTPS for this site.
+     */
+    public function enableLetsEncryptHttps(): void
+    {
+        $this->update(['letsencrypt_https_enabled' => true]);
+    }
+
+    /**
+     * Disable Let's Encrypt HTTPS for this site.
+     */
+    public function disableLetsEncryptHttps(): void
+    {
+        $this->update(['letsencrypt_https_enabled' => false]);
     }
 }

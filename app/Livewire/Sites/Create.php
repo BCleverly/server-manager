@@ -14,8 +14,6 @@ class Create extends Component
 {
     public SiteForm $form;
 
-    public array $phpVersions = ['8.1', '8.2', '8.3', '8.4'];
-
     public function updatedFormDomain($value)
     {
         if (! $this->form->folder) {
@@ -23,10 +21,17 @@ class Create extends Component
         }
     }
 
+    public function updatedFormFolder($value)
+    {
+        if (! $this->form->domain) {
+            $this->form->domain = $value . '.com';
+        }
+    }
+
     public function createSite()
     {
-        $this->validate();
-        Site::create([
+        $this->validate($this->form->rules());
+        $site = Site::create([
             'user_id' => Auth::id(),
             'name' => $this->form->name,
             'domain' => $this->form->domain,
@@ -34,10 +39,11 @@ class Create extends Component
             'php_version' => $this->form->php_version,
             'repository' => $this->form->repository,
             'repository_branch' => $this->form->repository_branch,
+            'letsencrypt_https_enabled' => $this->form->letsencrypt_https_enabled,
         ]);
         session()->flash('success', __('Site created successfully.'));
 
-        return redirect()->route('sites.index');
+        return redirect()->route('sites.show', $site);
     }
 
     public function render()

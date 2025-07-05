@@ -16,12 +16,14 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
+        $testUser = User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
 
-        // Seed 30 dummy sites
-        Site::factory(30)->create();
+        // Seed 30 dummy sites linked to the test user
+        Site::factory(30)->create([
+            'user_id' => $testUser->id,
+        ]);
     }
 }

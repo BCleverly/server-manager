@@ -1,41 +1,47 @@
 <div class="card bg-base-200 shadow-xl w-full">
     <div class="card-body">
-        <h2 class="card-title">Folder Status</h2>
-        <div class="mb-2">
-            <span class="font-semibold">Path:</span>
-            <span class="ml-2 badge badge-ghost badge-lg">{{ $path }}</span>
-        </div>
-        <div class="mb-2">
-            <span class="font-semibold">System:</span>
-            <span class="ml-2 badge badge-info badge-lg">{{ $system }}</span>
-        </div>
-        <div class="mb-4">
-            <span class="font-semibold">Exists:</span>
-            <span class="ml-2">
+        <h2 class="card-title mb-4">Folder Status</h2>
+        
+        <div class="space-y-3">
+            <div class="flex items-center gap-2">
+                <span class="font-medium">Path:</span>
+                <span class="badge badge-secondary">{{ $path }}</span>
+            </div>
+            
+            <div class="flex items-center gap-2">
+                <span class="font-medium">System:</span>
+                <span class="badge badge-info">{{ $system }}</span>
+            </div>
+            
+            <div class="flex items-center gap-2">
+                <span class="font-medium">Exists:</span>
                 @if($exists)
-                    <span class="badge badge-success badge-lg">Yes</span>
+                    <span class="badge badge-success">Yes</span>
                 @else
-                    <span class="badge badge-error badge-lg">No</span>
+                    <span class="badge badge-error">No</span>
                 @endif
-            </span>
+            </div>
+            
+            @if($exists)
+                <div class="flex items-center gap-2">
+                    <span class="font-medium">Permissions:</span>
+                    <span class="badge badge-outline">{{ $permissions }}</span>
+                </div>
+                
+                <div class="flex items-center gap-2">
+                    <span class="font-medium">Owner:</span>
+                    <span class="badge badge-outline">{{ $owner }}</span>
+                </div>
+                
+                <div class="flex items-center gap-2">
+                    <span class="font-medium">Group:</span>
+                    <span class="badge badge-outline">{{ $group }}</span>
+                </div>
+            @else
+                <div class="alert alert-error mt-4">
+                    <span>Folder does not exist on the server.</span>
+                </div>
+            @endif
         </div>
-        @if($exists)
-            <div class="mb-2">
-                <span class="font-semibold">Permissions:</span>
-                <span class="ml-2 badge badge-outline badge-lg">{{ $permissions }}</span>
-            </div>
-            <div class="mb-2">
-                <span class="font-semibold">Owner:</span>
-                <span class="ml-2 badge badge-outline badge-lg">{{ $owner }}</span>
-            </div>
-            <div class="mb-2">
-                <span class="font-semibold">Group:</span>
-                <span class="ml-2 badge badge-outline badge-lg">{{ $group }}</span>
-            </div>
-        @else
-            <div class="alert alert-error mt-4">
-                <span>Folder does not exist on the server.</span>
-            </div>
-        @endif
     </div>
 </div> 
