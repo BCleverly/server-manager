@@ -14,82 +14,68 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Livewire\Attributes\On;
 use Livewire\Component;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Carbon;
 
 class Chat extends Component
 {
-    public string $message = '';
     public array $messages = [];
-    public bool $reverbAvailable = true;
-    public string $reverbStatusMessage = '';
+    public string $newMessage = '';
 
-    public function mount(ReverbConnectivityService $reverbService): void
+    public function mount(): void
     {
-        // Check Reverb connectivity
-        $status = $reverbService->getReverbStatus();
-        $this->reverbAvailable = $status['available'];
-        $this->reverbStatusMessage = $status['message'];
-
-        // Initialize with some sample messages
-        $this->messages = [
-            ['user' => 'System', 'message' => 'Welcome to the chat!', 'timestamp' => now()->format('H:i')],
-        ];
-
+        $user = Auth::user();
         // Broadcast user joined event
-        $this->broadcastUserJoined();
-    }
-
-    public function broadcastUserJoined(): void
-    {
-        if ($this->reverbAvailable && auth()->check()) {
-            $userData = [
-                'user' => auth()->user()->name,
-                'message' => auth()->user()->name . ' joined the chat',
-                'timestamp' => now()->format('H:i'),
-                'type' => 'join'
-            ];
-
-            broadcast(new UserJoined($userData));
-        }
+        broadcast(new UserJoined([
+            'id' => $user->id,
+            'name' => $user->name,
+            'initials' => $user->initials(),
+        ]))->toOthers();
+        $this->messages = [];
     }
 
     public function sendMessage(): void
     {
+        $this->validate([
+            'newMessage' => ['required', 'string', 'max:1000'],
+        ]);
 
-        if (empty(trim($this->message))) {
-            return;
-        }
-
-        $messageData = [
-            'user' => auth()->user()?->name ?? 'Anonymous',
-            'message' => trim($this->message),
-            'timestamp' => now()->format('H:i'),
-            'type' => 'message'
+        $user = Auth::user();
+        $message = [
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'initials' => $user->initials(),
+            ],
+            'content' => $this->newMessage,
+            'timestamp' => now()->toISOString(),
+            'type' => 'message',
         ];
 
-        // Add message to local array
-        $this->messages[] = $messageData;
+        $this->messages[] = $message;
+        broadcast(new MessageEvent($message))->toOthers();
+        $this->newMessage = '';
+    }
 
-        // Only broadcast if Reverb is available
-        if ($this->reverbAvailable) {
-            broadcast(new MessageEvent($messageData));
+    #[On('echo:GlobalChat,.App\\Events\\Chat\\UserJoined')]
+    public function userJoined($payload): void
+    {
+        $user = $payload['user'] ?? null;
+        if ($user) {
+            $this->messages[] = [
+                'user' => $user,
+                'content' => null,
+                'timestamp' => now()->toISOString(),
+                'type' => 'join',
+            ];
         }
-
-        // Clear the input
-        $this->message = '';
     }
 
-    #[On('echo:chat-MessageEvent')]
-    public function handleNewMessage($event): void
+    #[On('echo:GlobalChat,.App\\Events\\Chat\\MessageEvent')]
+    public function receiveMessage($payload): void
     {
-        dd($event);
-        $this->messages[] = $event['message'];
-    }
-
-    #[On('echo:chat-UserJoined')]
-    public function handleUserJoined($event): void
-    {
-        dd($event);
-        $this->messages[] = $event['user'];
+        $this->messages[] = $payload['message'];
     }
 
     public function render()

@@ -21,12 +21,7 @@ class MessageEvent implements ShouldBroadcastNow
     public function broadcastOn(): array
     {
         return [
-            new Channel('chat'),
+            new Channel('GlobalChat'),
         ];
-    }
-
-    public function broadcastAs(): string
-    {
-        return 'chat-MessageEvent';
     }
 }

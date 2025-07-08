@@ -7,6 +7,6 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 });
 
 // Allow all authenticated users to access the chat channel
-Broadcast::channel('chat', function ($user) {
+Broadcast::channel('GlobalChat', function ($user) {
     return auth()->check();
 });

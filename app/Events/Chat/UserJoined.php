@@ -14,7 +14,6 @@ class UserJoined implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-
     public function __construct(
         public array $user
     ) {}
@@ -22,12 +21,7 @@ class UserJoined implements ShouldBroadcastNow
     public function broadcastOn(): array
     {
         return [
-            new Channel('chat'),
+            new Channel('GlobalChat'),
         ];
-    }
-
-    public function broadcastAs(): string
-    {
-        return 'chat-UserJoined';
     }
 }
