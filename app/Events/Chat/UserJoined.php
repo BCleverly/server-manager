@@ -25,4 +25,9 @@ class UserJoined implements ShouldBroadcastNow
             new Channel('chat'),
         ];
     }
+
+    public function broadcastAs(): string
+    {
+        return 'chat-UserJoined';
+    }
 }

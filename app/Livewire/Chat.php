@@ -54,6 +54,7 @@ class Chat extends Component
 
     public function sendMessage(): void
     {
+
         if (empty(trim($this->message))) {
             return;
         }
@@ -77,14 +78,14 @@ class Chat extends Component
         $this->message = '';
     }
 
-    #[On('echo:chat,MessageEvent')]
+    #[On('echo:chat-MessageEvent')]
     public function handleNewMessage($event): void
     {
         dd($event);
         $this->messages[] = $event['message'];
     }
 
-    #[On('echo:chat,UserJoined')]
+    #[On('echo:chat-UserJoined')]
     public function handleUserJoined($event): void
     {
         dd($event);

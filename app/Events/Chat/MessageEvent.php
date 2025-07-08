@@ -24,4 +24,9 @@ class MessageEvent implements ShouldBroadcastNow
             new Channel('chat'),
         ];
     }
+
+    public function broadcastAs(): string
+    {
+        return 'chat-MessageEvent';
+    }
 }
