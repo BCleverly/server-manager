@@ -29,38 +29,7 @@
                             </thead>
                             <tbody>
                                 @foreach($sites as $site)
-                                    <tr>
-                                        <td>{{ $site->name }}</td>
-                                        <td>{{ $site->domain }}</td>
-                                        <td>{{ $site->folder }}</td>
-                                        <td>
-                                            <span class="badge badge-primary">{{ $site->php_version }}</span>
-                                        </td>
-                                        <td>
-                                            @if($site->letsencrypt_https_enabled)
-                                                <div class="flex items-center gap-2">
-                                                    <div class="w-2 h-2 bg-green-500 rounded-full"></div>
-                                                    <span class="text-sm text-green-600 dark:text-green-400">{{ __('Enabled') }}</span>
-                                                </div>
-                                            @else
-                                                <div class="flex items-center gap-2">
-                                                    <div class="w-2 h-2 bg-gray-400 rounded-full"></div>
-                                                    <span class="text-sm text-gray-500 dark:text-gray-400">{{ __('Disabled') }}</span>
-                                                </div>
-                                            @endif
-                                        </td>
-                                        <td>{{ $site->created_at->diffForHumans() }}</td>
-                                        <td>
-                                            <div class="flex gap-2">
-                                                <a href="{{ route('sites.show', $site) }}" class="btn btn-outline btn-sm">
-                                                    {{ __('View') }}
-                                                </a>
-                                                <a href="{{ route('sites.edit', $site) }}" class="btn btn-primary btn-sm">
-                                                    {{ __('Edit') }}
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                    <livewire:sites.row :site="$site" :key="$site->id" />
                                 @endforeach
                             </tbody>
                         </table>
